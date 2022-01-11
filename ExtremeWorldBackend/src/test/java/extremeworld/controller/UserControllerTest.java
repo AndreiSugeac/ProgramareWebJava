@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,7 +43,7 @@ class UserControllerTest {
         UserDTO userDTO = UserDtoUtil.generateUserDTO("Test", "User");
         when(userService.createUser(any(), any())).thenReturn(userDTO);
 
-        MvcResult result = mockMvc.perform(post("/users/client")
+        MvcResult result = mockMvc.perform(post("/users/register/client")
                 .content(objectMapper.writeValueAsString(userDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -52,17 +53,60 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("GetUserById_Test")
-    void getUserById() throws Exception{
+    @DisplayName("Login_Test")
+    void test_login() throws Exception {
+        //Arrange
+        String username = "ASugeac";
+        String password = "Parola1";
+        when(userService.loginUser(username, password)).thenReturn(1);
 
+        //Act
+        MvcResult result = mockMvc.perform(patch("/users/login?username=" + username + "&password=" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted())
+                .andReturn();
 
+        //Assert
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Login successful!");
+    }
+
+    @Test
+    @DisplayName("Login_Test")
+    void test_login_Exception() throws Exception {
+        //Arrange
+        String username = "ASugeac";
+        String password = "Parola1";
+        when(userService.loginUser(username, password)).thenReturn(0);
+
+        //Act
+        MvcResult result = mockMvc.perform(patch("/users/login?username=" + username + "&password=" + password)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404))
+                .andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Invalid username or password!");
+    }
+
+    @Test
+    @DisplayName("Test_Logout")
+    void test_logout() throws Exception {
+        //Arrange
+        String username = "ASugeac";
+        when(userService.logoutUser(username)).thenReturn(1);
+
+        //Act
+        MvcResult result = mockMvc.perform(patch("/users/logout?username=" + username)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted())
+                .andReturn();
+
+        //Assert
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Logout successful!");
     }
 
     @Test
     void deleteOne() {
-    }
 
-    @Test
-    void updateStudent() {
     }
 }

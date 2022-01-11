@@ -22,4 +22,10 @@ public class LocationService {
 
         return locationMapper.mapToDto(savedLocation);
     }
+
+    public LocationDTO getById(Long id) {
+        Location location = locationsRepository.getLocationById(id);
+
+        return locationMapper.mapToDto(location);
+    }
 }

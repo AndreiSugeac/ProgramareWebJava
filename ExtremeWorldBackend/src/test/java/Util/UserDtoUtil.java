@@ -9,6 +9,7 @@ public class UserDtoUtil {
                 .firstName(firstName)
                 .lastName(lastName)
                 .password("pass123")
+                .username("userName")
                 .build();
     }
 }

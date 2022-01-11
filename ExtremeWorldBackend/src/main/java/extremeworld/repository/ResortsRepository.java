@@ -6,6 +6,7 @@ import extremeworld.domain.Resort;
 import extremeworld.exceptions.LocationNotFoundException;
 import extremeworld.exceptions.ResortNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -137,6 +138,23 @@ public class ResortsRepository {
         }
 
         throw new ResortNotFoundException("Resort not found!");
+    }
+
+    public List<Resort> getResortsByCity(String city) {
+        String selectSql = "SELECT * FROM resorts r JOIN locations l ON r.location_id = l.id WHERE l.city = ?";
+
+        RowMapper<Resort> rowMapper = (resultSet, rowNo) -> Resort.builder()
+                .id(resultSet.getLong("id"))
+                .resortName(resultSet.getString("resort_name"))
+                .build();
+
+        List<Resort> resortList = jdbcTemplate.query(selectSql, rowMapper, city);
+
+        if(!resortList.isEmpty()) {
+            return resortList;
+        }
+
+        throw new ResortNotFoundException("Resorts not found!");
     }
 
 }

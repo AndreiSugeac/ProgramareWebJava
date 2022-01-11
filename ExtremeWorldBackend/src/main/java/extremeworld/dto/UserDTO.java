@@ -18,4 +18,8 @@ public class UserDTO {
     private String firstName;
 
     private String password;
+
+    private String username;
+
+    private String userType;
 }

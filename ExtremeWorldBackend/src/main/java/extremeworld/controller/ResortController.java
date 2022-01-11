@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/resorts")
 public class ResortController {
@@ -26,5 +28,12 @@ public class ResortController {
         return ResponseEntity
                 .ok()
                 .body(resortService.getResortById(id));
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<ResortDTO>> getByCity(@PathVariable String city) {
+        return ResponseEntity
+                .ok()
+                .body(resortService.getResortsByCity(city));
     }
 }

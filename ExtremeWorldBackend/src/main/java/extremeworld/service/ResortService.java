@@ -10,6 +10,10 @@ import extremeworld.repository.ResortsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 @Service
 public class ResortService {
 
@@ -33,5 +37,12 @@ public class ResortService {
 
     public ResortDTO getResortById(Long id) {
         return resortMapper.mapToDto(resortsRepository.getResortById(id));
+    }
+
+    public List<ResortDTO> getResortsByCity(String city) {
+        List<Resort> resorts = resortsRepository.getResortsByCity(city);
+        List<ResortDTO> resortDTOS = new ArrayList<>();
+        resorts.forEach(item -> resortDTOS.add(resortMapper.mapToDto(item)));
+        return resortDTOS;
     }
 }

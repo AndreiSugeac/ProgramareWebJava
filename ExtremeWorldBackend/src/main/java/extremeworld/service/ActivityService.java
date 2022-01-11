@@ -28,4 +28,10 @@ public class ActivityService {
 
         return activityMapper.mapToDto(activityRepository.addActivityToResort(id, activity));
     }
+
+    public ActivityDTO getActivityById(Long id) {
+        Activity activity = activityRepository.getActivityById(id);
+
+        return activityMapper.mapToDto(activity);
+    }
 }

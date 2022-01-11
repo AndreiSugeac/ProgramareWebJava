@@ -26,4 +26,11 @@ public class ActivityController {
                 .ok()
                 .body(activityService.addActivityToResort(id, activityDTO));
     }
+
+    @GetMapping("/activity/{id}")
+    public ResponseEntity<ActivityDTO> getActivityById(@PathVariable Long id) {
+        return ResponseEntity
+                .ok()
+                .body(activityService.getActivityById(id));
+    }
 }

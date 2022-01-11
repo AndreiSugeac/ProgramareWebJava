@@ -27,6 +27,10 @@ public class Activity {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "activities")
     private Set<Resort> resorts = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "reservation_id", nullable = false)
+    private Reservation reservation;
+
     public String getActivityName() {
         return activityName;
     }
